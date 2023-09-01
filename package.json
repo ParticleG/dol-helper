@@ -10,8 +10,8 @@
     "lint": "eslint . --ext .js,.cjs,.mjs,.ts,.cts,.mts --fix --ignore-path .gitignore"
   },
   "devDependencies": {
-    "typescript": "^5.0.2",
-    "vite": "^4.4.5"
+    "typescript": "^5.2.2",
+    "vite": "^4.4.9"
   },
   "dependencies": {
     "@types/node": "^20.5.7",

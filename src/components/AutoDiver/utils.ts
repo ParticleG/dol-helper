@@ -21,6 +21,28 @@ export const getPassage = async () => {
   return passage;
 };
 
+export const getTiredness = async () => {
+  const tirednessMeter = document.querySelector(
+    '#tirednesscaption > div.meter',
+  );
+  if (!tirednessMeter) {
+    return NaN;
+  }
+  return (
+    parseFloat(tirednessMeter.querySelector('div')?.style.width ?? '0%') / 100
+  );
+};
+
+export const getStress = async () => {
+  const stressMeter = document.querySelector('#stresscaption > div.meter');
+  if (!stressMeter) {
+    return NaN;
+  }
+  return (
+    parseFloat(stressMeter.querySelector('div')?.style.width ?? '0%') / 100
+  );
+};
+
 export const getOxygen = async (passage: HTMLElement) => {
   const oxygenMeter = passage.querySelector('#oxygencaption > div.meter');
   if (!oxygenMeter) {
@@ -48,7 +70,10 @@ export const checkContinue = async (passage: HTMLElement) => {
   return false;
 };
 
-export const checkSwarmInDepths = async (passage: HTMLElement, extraRevertCount: number) => {
+export const checkSwarmInDepths = async (
+  passage: HTMLElement,
+  extraRevertCount: number,
+) => {
   const depthsSwarm = passage.querySelector<HTMLLinkElement>(
     `[data-passage='Lake Depths Swarm']`,
   );

@@ -20,11 +20,11 @@ dependencies:
 
 devDependencies:
   typescript:
-    specifier: ^5.0.2
-    version: 5.0.2
+    specifier: ^5.2.2
+    version: 5.2.2
   vite:
-    specifier: ^4.4.5
-    version: 4.4.5(@types/node@20.5.7)
+    specifier: ^4.4.9
+    version: 4.4.9(@types/node@20.5.7)
 
 packages:
 
@@ -934,9 +934,9 @@ packages:
     engines: {node: '>=10'}
     dev: false
 
-  /typescript@5.0.2:
-    resolution: {integrity: sha512-wVORMBGO/FAs/++blGNeAVdbNKtIh1rbBL2EyQ1+J9lClJ93KiiKe8PmFIVdXhHcyv44SL9oglmfeSsndo0jRw==}
-    engines: {node: '>=12.20'}
+  /typescript@5.2.2:
+    resolution: {integrity: sha512-mI4WrpHsbCIcwT9cF4FZvr80QUeKvsUsUvKDoR+X/7XHQH98xYD8YHZg7ANtz2GtZt/CBq2QJ0thkGJMHfqc1w==}
+    engines: {node: '>=14.17'}
     hasBin: true
     dev: true
 
@@ -946,8 +946,8 @@ packages:
       punycode: 2.3.0
     dev: false
 
-  /vite@4.4.5(@types/node@20.5.7):
-    resolution: {integrity: sha512-4m5kEtAWHYr0O1Fu7rZp64CfO1PsRGZlD3TAB32UmQlpd7qg15VF7ROqGN5CyqN7HFuwr7ICNM2+fDWRqFEKaA==}
+  /vite@4.4.9(@types/node@20.5.7):
+    resolution: {integrity: sha512-2mbUn2LlUmNASWwSCNSJ/EG2HuSRTnVNaydp6vMCm5VIqJsjMfbIWtbH2kDuwUVW5mMUKKZvGPX/rqeqVvv1XA==}
     engines: {node: ^14.18.0 || >=16.0.0}
     hasBin: true
     peerDependencies:

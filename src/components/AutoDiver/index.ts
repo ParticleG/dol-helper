@@ -4,6 +4,8 @@ import {
   checkSwarmInRuin,
   getOxygen,
   getPassage,
+  getStress,
+  getTiredness,
   goDeeper,
   goShallower,
 } from 'components/AutoDiver/utils.ts';
@@ -12,10 +14,11 @@ import { sleep } from 'utils/common.ts';
 export class AutoDiver {
   private _needRevert: boolean = false;
 
-  async start(count: number) {
+  async start() {
     let extraRevertCount = 0;
-    while (count >= 0) {
-      await sleep(1000);
+    let stress = await getStress();
+    while (!isNaN(stress) && stress < 90) {
+      await sleep(50);
       const passage = await getPassage();
       const oxygen = await getOxygen(passage);
 
@@ -27,9 +30,6 @@ export class AutoDiver {
           extraRevertCount++;
         } else if (!(await checkContinue(passage))) {
           extraRevertCount = 0;
-          if (--count < 0) {
-            break;
-          }
           await goDeeper(passage);
         }
         continue;
@@ -55,6 +55,7 @@ export class AutoDiver {
           break;
         }
       }
+      stress = await getTiredness();
     }
   }
 }
