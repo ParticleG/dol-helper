@@ -28,9 +28,7 @@ export const getTiredness = async () => {
   if (!tirednessMeter) {
     return NaN;
   }
-  return (
-    parseFloat(tirednessMeter.querySelector('div')?.style.width ?? '0%') / 100
-  );
+  return parseFloat(tirednessMeter.querySelector('div')?.style.width ?? '0%');
 };
 
 export const getStress = async () => {
@@ -38,9 +36,7 @@ export const getStress = async () => {
   if (!stressMeter) {
     return NaN;
   }
-  return (
-    parseFloat(stressMeter.querySelector('div')?.style.width ?? '0%') / 100
-  );
+  return parseFloat(stressMeter.querySelector('div')?.style.width ?? '0%');
 };
 
 export const getOxygen = async (passage: HTMLElement) => {
@@ -48,9 +44,7 @@ export const getOxygen = async (passage: HTMLElement) => {
   if (!oxygenMeter) {
     return NaN;
   }
-  return (
-    parseFloat(oxygenMeter.querySelector('div')?.style.width ?? '0%') / 100
-  );
+  return parseFloat(oxygenMeter.querySelector('div')?.style.width ?? '0%');
 };
 
 export const checkContinue = async (passage: HTMLElement) => {

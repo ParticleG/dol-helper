@@ -41,7 +41,7 @@ export class AutoDiver {
         this._needRevert = true;
         continue;
       }
-      if (!this._needRevert && (isNaN(oxygen) || oxygen >= 0.15)) {
+      if (!this._needRevert && (isNaN(oxygen) || oxygen >= 15)) {
         if (!(await goDeeper(passage))) {
           console.log('Swimming deeper passage not found');
           break;
