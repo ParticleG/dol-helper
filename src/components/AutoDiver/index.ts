@@ -5,7 +5,6 @@ import {
   getOxygen,
   getPassage,
   getStress,
-  getTiredness,
   goDeeper,
   goShallower,
 } from 'components/AutoDiver/utils.ts';
@@ -19,6 +18,8 @@ export class AutoDiver {
     let stress = await getStress();
     while (!isNaN(stress) && stress < 90) {
       await sleep(50);
+      console.log(`Stress Level: ${stress}`);
+
       const passage = await getPassage();
       const oxygen = await getOxygen(passage);
 
@@ -55,7 +56,7 @@ export class AutoDiver {
           break;
         }
       }
-      stress = await getTiredness();
+      stress = await getStress();
     }
   }
 }
