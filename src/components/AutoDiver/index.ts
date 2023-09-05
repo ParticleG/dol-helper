@@ -11,7 +11,6 @@ import {
 export class AutoDiver {
   private _extraRevertCount: number = 0;
   private readonly _oxygenThreshold: number;
-  private _passage: HTMLDivElement = document.createElement('div');
   private readonly _stressThreshold: number;
 
   constructor(oxygenThreshold: number, stressThreshold: number) {
@@ -23,18 +22,11 @@ export class AutoDiver {
     let stress = await getStress();
     while (!isNaN(stress) && stress < this._stressThreshold) {
       console.log(`Stress Level: ${stress}`);
-
-      this._passage = await getPassage();
       const oxygen = await this._getOxygen();
-
-      console.log(
-        `Passage type: ${this._passage.getAttribute('data-passage')}`,
-      );
 
       if (isNaN(oxygen)) {
         if (await this._checkSwarmInDepths()) {
           for (let index = 0; index < SHALLOW_TIMES; index++) {
-            this._passage = await getPassage();
             await goShallower();
           }
         } else {
@@ -54,22 +46,33 @@ export class AutoDiver {
       }
 
       if (oxygen < this._oxygenThreshold) {
-        this._passage = await getPassage();
         await goShallower();
       } else {
         await goDeeper();
       }
       stress = await getStress();
     }
+
     // Make sure we're not in the middle of the lake
-    for (let index = 0; index < SHALLOW_TIMES; index++) {
-      this._passage = await getPassage();
-      await goShallower();
+    if (!isNaN(await this._getOxygen())) {
+      while (true) {
+        try {
+          for (let index = 0; index < SHALLOW_TIMES; index++) {
+            await goShallower();
+          }
+        } catch {}
+        if (await this._checkSwarmInDepths()) {
+          continue;
+        }
+        await checkContinue();
+        break;
+      }
     }
   }
 
   private async _getOxygen() {
-    const oxygenMeter = this._passage.querySelector<HTMLDivElement>(
+    const passage = await getPassage();
+    const oxygenMeter = passage.querySelector<HTMLDivElement>(
       '#oxygencaption > div.meter',
     );
     return oxygenMeter
@@ -78,7 +81,8 @@ export class AutoDiver {
   }
 
   private async _checkSwarmInDepths() {
-    const depthsSwarm = this._passage.querySelector<HTMLLinkElement>(
+    const passage = await getPassage();
+    const depthsSwarm = passage.querySelector<HTMLLinkElement>(
       `[data-passage='Lake Depths Swarm']`,
     );
     if (depthsSwarm) {
@@ -90,7 +94,8 @@ export class AutoDiver {
   }
 
   private async _checkSwarmInRuin() {
-    const revertPassage = this._passage.querySelector<HTMLLinkElement>(
+    const passage = await getPassage();
+    const revertPassage = passage.querySelector<HTMLLinkElement>(
       `[data-passage='Lake Swarm']`,
     );
     if (revertPassage) {
