@@ -5,8 +5,8 @@ import {
   getStress,
   goDeeper,
   goShallower,
-  revert
-} from "components/AutoDiver/utils.ts";
+  revert,
+} from 'components/AutoDiver/utils.ts';
 
 export class AutoDiver {
   private _extraRevertCount: number = 0;
@@ -60,6 +60,11 @@ export class AutoDiver {
         await goDeeper();
       }
       stress = await getStress();
+    }
+    // Make sure we're not in the middle of the lake
+    for (let index = 0; index < SHALLOW_TIMES; index++) {
+      this._passage = await getPassage();
+      await goShallower();
     }
   }
 
