@@ -1,5 +1,8 @@
 import { PassageType } from 'components/AutoDiver/types.ts';
 
+export const SLEEP_INTERVAL = 50;
+export const SHALLOW_TIMES = 3;
+
 export const validPassageTypes = [
   'Lake Depths',
   'Lake Pots',
