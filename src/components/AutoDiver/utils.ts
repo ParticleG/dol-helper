@@ -1,4 +1,6 @@
 import {
+  deeperPassageTypes,
+  shallowerPassageTypes,
   SLEEP_INTERVAL,
   validPassageTypes,
 } from 'components/AutoDiver/constants';
@@ -36,4 +38,55 @@ export const getStress = async () => {
     return NaN;
   }
   return parseFloat(stressMeter.querySelector('div')?.style.width ?? '0%');
+};
+
+export const checkContinue = async () => {
+  const passage = await getPassage();
+  if (
+    passage.getAttribute('data-passage') === 'Lake Depths' &&
+    passage.querySelector<HTMLLinkElement>('span.purple')
+  ) {
+    const continuePassage = passage.querySelector<HTMLLinkElement>(
+      `[data-passage='Lake Depths']`,
+    );
+    if (continuePassage) {
+      console.log('Continue passage found');
+      continuePassage.click();
+      await sleep(SLEEP_INTERVAL);
+      return true;
+    }
+  }
+  return false;
+}
+
+export const goDeeper = async () => {
+  const passage = await getPassage();
+  for (const { name, description } of deeperPassageTypes) {
+    const deeperPassage = passage.querySelector<HTMLLinkElement>(
+      `[data-passage='${name}']`,
+    );
+    if (deeperPassage) {
+      console.log(description);
+      deeperPassage.click();
+      await sleep(SLEEP_INTERVAL);
+      return;
+    }
+  }
+  throw new Error('Swimming deeper passage not found');
+};
+
+export const goShallower = async () => {
+  const passage = await getPassage();
+  for (const { name, description } of shallowerPassageTypes) {
+    const shallowerPassage = passage.querySelector<HTMLLinkElement>(
+      `[data-passage='${name}']`,
+    );
+    if (shallowerPassage) {
+      console.log(description);
+      shallowerPassage.click();
+      await sleep(SLEEP_INTERVAL);
+      return;
+    }
+  }
+  throw new Error('Swimming shallower passage not found');
 };

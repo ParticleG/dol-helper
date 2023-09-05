@@ -1,11 +1,12 @@
+import { SHALLOW_TIMES } from 'components/AutoDiver/constants.ts';
 import {
-  deeperPassageTypes,
-  SHALLOW_TIMES,
-  shallowerPassageTypes,
-  SLEEP_INTERVAL,
-} from 'components/AutoDiver/constants.ts';
-import { getPassage, getStress, revert } from 'components/AutoDiver/utils.ts';
-import { sleep } from 'utils/common.ts';
+  checkContinue,
+  getPassage,
+  getStress,
+  goDeeper,
+  goShallower,
+  revert
+} from "components/AutoDiver/utils.ts";
 
 export class AutoDiver {
   private _extraRevertCount: number = 0;
@@ -33,11 +34,12 @@ export class AutoDiver {
       if (isNaN(oxygen)) {
         if (await this._checkSwarmInDepths()) {
           for (let index = 0; index < SHALLOW_TIMES; index++) {
-            await this._goShallower();
+            this._passage = await getPassage();
+            await goShallower();
           }
         } else {
-          if (!(await this._checkContinue())) {
-            await this._goDeeper();
+          if (!(await checkContinue())) {
+            await goDeeper();
           }
           this._extraRevertCount = 0;
         }
@@ -47,14 +49,15 @@ export class AutoDiver {
       console.log(`Oxygen Level: ${oxygen}`);
 
       if (await this._checkSwarmInRuin()) {
-        await this._goShallower();
+        await goShallower();
         continue;
       }
 
       if (oxygen < this._oxygenThreshold) {
-        await this._goShallower();
+        this._passage = await getPassage();
+        await goShallower();
       } else {
-        await this._goDeeper();
+        await goDeeper();
       }
       stress = await getStress();
     }
@@ -67,23 +70,6 @@ export class AutoDiver {
     return oxygenMeter
       ? parseFloat(oxygenMeter.querySelector('div')?.style.width ?? '0%')
       : NaN;
-  }
-
-  private async _checkContinue() {
-    if (
-      this._passage.getAttribute('data-passage') === 'Lake Depths' &&
-      this._passage.querySelector<HTMLLinkElement>('span.purple')
-    ) {
-      const continuePassage = this._passage.querySelector<HTMLLinkElement>(
-        `[data-passage='Lake Depths']`,
-      );
-      if (continuePassage) {
-        console.log('Continue passage found');
-        continuePassage.click();
-        return true;
-      }
-    }
-    return false;
   }
 
   private async _checkSwarmInDepths() {
@@ -108,35 +94,5 @@ export class AutoDiver {
       return true;
     }
     return false;
-  }
-
-  private async _goDeeper() {
-    for (const { name, description } of deeperPassageTypes) {
-      const deeperPassage = this._passage.querySelector<HTMLLinkElement>(
-        `[data-passage='${name}']`,
-      );
-      if (deeperPassage) {
-        console.log(description);
-        deeperPassage.click();
-        await sleep(SLEEP_INTERVAL);
-        return;
-      }
-    }
-    throw new Error('Swimming deeper passage not found');
-  }
-
-  private async _goShallower() {
-    for (const { name, description } of shallowerPassageTypes) {
-      const shallowerPassage = this._passage.querySelector<HTMLLinkElement>(
-        `[data-passage='${name}']`,
-      );
-      if (shallowerPassage) {
-        console.log(description);
-        shallowerPassage.click();
-        await sleep(SLEEP_INTERVAL);
-        return;
-      }
-    }
-    throw new Error('Swimming shallower passage not found');
   }
 }

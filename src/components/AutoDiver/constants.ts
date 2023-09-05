@@ -1,6 +1,6 @@
 import { PassageType } from 'components/AutoDiver/types.ts';
 
-export const SLEEP_INTERVAL = 50;
+export const SLEEP_INTERVAL = 1000;
 export const SHALLOW_TIMES = 3;
 
 export const validPassageTypes = [
